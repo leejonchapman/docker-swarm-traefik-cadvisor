@@ -3,9 +3,6 @@ services:
   software:
     hostname: '{{.Node.Hostname}}'
     image: google/cadvisor:latest
-# container_name: cadvisor
-# ports:
-# - 8080:8080
     networks:
       - internal
     volumes:
@@ -13,21 +10,8 @@ services:
     - /var/run:/var/run:rw
     - /sys:/sys:ro
     - /var/lib/docker/:/var/lib/docker:ro
-    depends_on:
-    - redis
     deploy:
-      labels:
-        traefik.enable: "true"
-        traefik.backend: "cadvisor"
-        traefik.docker.network: "internal"
-#       traefik.frontend.rule: "Host:tinyrss.leejonchapman.com"
-        traefik.web.port: "8080"
-#       traefik.frontend.headers.SSLRedirect: "true"
-#       traefik.frontend.headers.SSLHost: "tinyrss.leejonchapman.com"        
-      placement:
-        constraints:
-          - node.role == manager
-#       mode: global
+      mode: global
       restart_policy:
         condition: any
         max_attempts: 3    
